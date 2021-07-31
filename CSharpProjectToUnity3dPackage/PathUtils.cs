@@ -21,5 +21,14 @@ namespace CSharpProjectToUnity3dPackage
         {
             return path + ".meta";
         }
+
+        public static void ClearAndCreateDirectory(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Directory.Delete(path, true);
+            }
+            Directory.CreateDirectory(path);
+        }
     }
 }

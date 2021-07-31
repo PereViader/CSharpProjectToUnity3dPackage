@@ -23,11 +23,9 @@ namespace CSharpProjectToUnity3dPackage
                 new MetaFileForDirectoryPathTransformation()
             });
 
-            var toAsmdefExtensionFilePathTransformer = new ChangeExtensionPathTransfomation("asmdef");
-
             var asmdefFilePathTransformation = new CompositePathTransformation(new IPathTransformation[]
             {
-                toAsmdefExtensionFilePathTransformer,
+                new ChangeExtensionPathTransfomation("asmdef"),
                 inputToOutputPathTransformation
             });
 
@@ -37,10 +35,23 @@ namespace CSharpProjectToUnity3dPackage
                 new MetaFileForFilePathTransformation()
             });
 
+            var unityPackageFilePathTransformer = new CompositePathTransformation(new IPathTransformation[]
+            {
+                new ChangeFileNamePathTransfomation("package.json"),
+                inputToOutputPathTransformation
+            });
+
+            var unityPackageMetaPathTransformer = new CompositePathTransformation(new IPathTransformation[]
+            {
+                unityPackageFilePathTransformer,
+                new MetaFileForFilePathTransformation()
+            });
+
             var directoryMetaWritter = new TemplateFileWritter(TemplateUtils.GetTemplateAtPath(FilePaths.Folder_Meta_Liquid));
             var csharpMetaWritter = new TemplateFileWritter(TemplateUtils.GetTemplateAtPath(FilePaths.Csharp_Meta_Liquid));
             var asmdefMetaWritter = new TemplateFileWritter(TemplateUtils.GetTemplateAtPath(FilePaths.AssamblyDefinition_Meta_Liquid));
             var asmdefFileWritter = new TemplateFileWritter(TemplateUtils.GetTemplateAtPath(FilePaths.AssamblyDefinition_Asmdef_Liquid));
+            var textFileMetaWritter = new TemplateFileWritter(TemplateUtils.GetTemplateAtPath(FilePaths.TextFile_Meta_Liquid));
 
             var guidContextExtractor = new GuidFileContextExtractor();
             var nameContextExtractor = new NameWithoutExtensionFileContextExtractor();
@@ -63,10 +74,17 @@ namespace CSharpProjectToUnity3dPackage
                 new TemplateExtractorOutputter(asmdefMetaPathTransformation, asmdefMetaWritter, guidContextExtractor)
             });
 
+            IOutputter unity3dPackageOutputter = new CompositeOutputter(new IOutputter[]
+            {
+                new FileCopyOutputter(unityPackageFilePathTransformer),
+                new TemplateExtractorOutputter(unityPackageMetaPathTransformer,textFileMetaWritter, guidContextExtractor),
+            });
+
             var fileOutputterMapper = new FileOutputterMapper(new List<(IPathPredicate, IOutputter)>()
             {
                 (new IsFileExtensionPathPredicate("cs"), csharpOutputter),
-                (new IsFileExtensionPathPredicate("csproj"), asmdefOutputter)
+                (new IsFileExtensionPathPredicate("csproj"), asmdefOutputter),
+                (new IsFileNamePathPredicate("unity3d-package.json"), unity3dPackageOutputter)
             });
 
             if (!Directory.Exists(inputPath))
@@ -75,7 +93,7 @@ namespace CSharpProjectToUnity3dPackage
                 return;
             }
 
-            ClearAndCreateDirectory(outputPath);
+            PathUtils.ClearAndCreateDirectory(outputPath);
 
             DirectoryFileTraverser.TraverseAll(inputPath, directoryPath =>
             {
@@ -91,15 +109,6 @@ namespace CSharpProjectToUnity3dPackage
 
                 outputter.Output(filePath);
             });
-        }
-
-        public static void ClearAndCreateDirectory(string path)
-        {
-            if (Directory.Exists(path))
-            {
-                Directory.Delete(path, true);
-            }
-            Directory.CreateDirectory(path);
         }
     }
 }
