@@ -15,7 +15,7 @@ namespace CSharpProjectToUnity3dPackage
 
         public string Transform(string path)
         {
-            string fileWithoutIput = path.Remove(0, inputPath.Length);
+            string fileWithoutIput = Path.GetRelativePath(inputPath, path);
             string fileOnOutput = Path.Combine(outputPath, fileWithoutIput);
             return fileOnOutput;
         }

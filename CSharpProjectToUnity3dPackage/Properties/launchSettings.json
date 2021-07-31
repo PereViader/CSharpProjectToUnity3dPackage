@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CSharpProjectToUnity3dPackage": {
+      "commandName": "Project",
+      "commandLineArgs": "\"Input\" \"Output\""
+    }
+  }
+}

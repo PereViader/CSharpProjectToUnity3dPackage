@@ -4,14 +4,14 @@ using System.IO;
 
 namespace CSharpProjectToUnity3dPackage
 {
-    public class EntryPoint
+    public class Program
     {
-        public static void Run(string[] args)
+        public static void Main(string[] args)
         {
             string inputPath = args[0];
             string outputPath = args[1];
 
-            var inputToOutputPathTransformation = new InputToOutputPathTransformation(FilePaths.InputPath, FilePaths.OutputPath);
+            var inputToOutputPathTransformation = new InputToOutputPathTransformation(inputPath, outputPath);
             var metaFilePathTransformation = new CompositePathTransformation(new IPathTransformation[]
             {
                 inputToOutputPathTransformation,
