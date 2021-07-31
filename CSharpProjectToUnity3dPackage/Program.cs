@@ -69,13 +69,13 @@ namespace CSharpProjectToUnity3dPackage
                 (new IsFileExtensionPathPredicate("csproj"), asmdefOutputter)
             });
 
-            ClearAndCreateDirectory(outputPath);
-
             if (!Directory.Exists(inputPath))
             {
                 Console.WriteLine($"Input directory at path {inputPath} does not exist");
                 return;
             }
+
+            ClearAndCreateDirectory(outputPath);
 
             DirectoryFileTraverser.TraverseAll(inputPath, directoryPath =>
             {
