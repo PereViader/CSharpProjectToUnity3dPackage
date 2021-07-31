@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>CSharpProjectToUnity3dPackage.Test</AssemblyName>
+    <RootNamespace>CSharpProjectToUnity3dPackage.Test</RootNamespace>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CSharpProjectToUnity3dPackage\CSharpProjectToUnity3dPackage.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31321.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpProjectToUnity3dPackage", "CSharpProjectToUnity3dPackage\CSharpProjectToUnity3dPackage.csproj", "{CD3FDF53-8CD5-4D3A-AAEB-83F613848092}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpProjectToUnity3dPackage.Test", "CSharpProjectToUnity3dPackage.Test\CSharpProjectToUnity3dPackage.Test.csproj", "{413B4591-244A-4E86-857E-0EE3C71F9D8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD3FDF53-8CD5-4D3A-AAEB-83F613848092}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD3FDF53-8CD5-4D3A-AAEB-83F613848092}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD3FDF53-8CD5-4D3A-AAEB-83F613848092}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD3FDF53-8CD5-4D3A-AAEB-83F613848092}.Release|Any CPU.Build.0 = Release|Any CPU
+		{413B4591-244A-4E86-857E-0EE3C71F9D8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{413B4591-244A-4E86-857E-0EE3C71F9D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{413B4591-244A-4E86-857E-0EE3C71F9D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{413B4591-244A-4E86-857E-0EE3C71F9D8C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {32C6111E-264E-499B-9B7C-387BB60BF74F}
+	EndGlobalSection
+EndGlobal
