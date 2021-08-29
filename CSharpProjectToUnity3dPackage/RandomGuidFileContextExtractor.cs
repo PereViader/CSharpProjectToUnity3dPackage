@@ -3,7 +3,7 @@ using System;
 
 namespace CSharpProjectToUnity3dPackage
 {
-    public class GuidFileContextExtractor : IFileContextExtractor
+    public class RandomGuidFileContextExtractor : IFileContextExtractor
     {
         public Hash GetHash(string filePath)
         {

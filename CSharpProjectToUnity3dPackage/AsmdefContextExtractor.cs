@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace CSharpProjectToUnity3dPackage
 {
+
     public class AsmdefContextExtractor : IFileContextExtractor
     {
         private readonly Unity3dPackageConfiguration unity3DPackageConfiguration;
-        private readonly Regex assamblyRegex;
+        private readonly AssamblyExtractorFromCsproj assamblyExtractorFromCsproj;
 
-        public AsmdefContextExtractor(Unity3dPackageConfiguration unity3DPackageConfiguration)
+        public AsmdefContextExtractor(Unity3dPackageConfiguration unity3DPackageConfiguration, AssamblyExtractorFromCsproj assamblyExtractorFromCsproj)
         {
             this.unity3DPackageConfiguration = unity3DPackageConfiguration;
-            this.assamblyRegex = new Regex("<AssemblyName>(.*?)</AssemblyName>", RegexOptions.Singleline);
+            this.assamblyExtractorFromCsproj = assamblyExtractorFromCsproj;
         }
 
         public Hash GetHash(string filePath)
         {
             string name = Path.GetFileNameWithoutExtension(filePath);
 
-            var fileContent = File.ReadAllText(filePath);
-            var matches = assamblyRegex.Match(fileContent);
-            var assambly = matches.Groups[1].Value;
+            var assambly = assamblyExtractorFromCsproj.GetAssambly(filePath);
 
             var dependantAssamblies = unity3DPackageConfiguration.AssamblyConfigurations
                 .FirstOrDefault(x => x.Assambly.Equals(assambly))

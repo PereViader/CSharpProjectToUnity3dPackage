@@ -57,8 +57,10 @@ namespace CSharpProjectToUnity3dPackage
             var asmdefFileWritter = new TemplateFileWritter(TemplateUtils.GetTemplateAtPath(FilePaths.AssamblyDefinition_Asmdef_Liquid));
             var textFileMetaWritter = new TemplateFileWritter(TemplateUtils.GetTemplateAtPath(FilePaths.TextFile_Meta_Liquid));
 
-            var guidContextExtractor = new GuidFileContextExtractor();
-            var asmdefContextExtractor = new AsmdefContextExtractor(configuration);
+            var assamblyExtractorFromCsproj = new AssamblyExtractorFromCsproj();
+            var guidContextExtractor = new RandomGuidFileContextExtractor();
+            var asmdefMetaFileContextExtractor = new AsmdefMetaFileContextExtractor(assamblyExtractorFromCsproj, configuration);
+            var asmdefContextExtractor = new AsmdefContextExtractor(configuration, assamblyExtractorFromCsproj);
 
             IOutputter folderOutputter = new CompositeOutputter(new IOutputter[]
             {
@@ -75,7 +77,7 @@ namespace CSharpProjectToUnity3dPackage
             IOutputter asmdefOutputter = new CompositeOutputter(new IOutputter[]
             {
                 new TemplateExtractorOutputter(asmdefFilePathTransformation, asmdefFileWritter, asmdefContextExtractor),
-                new TemplateExtractorOutputter(asmdefMetaPathTransformation, asmdefMetaWritter, guidContextExtractor)
+                new TemplateExtractorOutputter(asmdefMetaPathTransformation, asmdefMetaWritter, asmdefMetaFileContextExtractor)
             });
 
             IOutputter unity3dPackageOutputter = new CompositeOutputter(new IOutputter[]

@@ -5,6 +5,7 @@ namespace CSharpProjectToUnity3dPackage
     public class AssamblyConfiguration
     {
         public string Assambly { get; set; }
+        public string Guid { get; set; }
         public List<string> AssamblyDependencies { get; set; }
     }
 }
