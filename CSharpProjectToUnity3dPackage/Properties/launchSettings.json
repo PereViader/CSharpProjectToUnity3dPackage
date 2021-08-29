@@ -1,8 +1,7 @@
 {
   "profiles": {
     "CSharpProjectToUnity3dPackage": {
-      "commandName": "Project",
-      "commandLineArgs": "\"C:\\Users\\Pere\\Code\\ManualDI.Main\\ManualDi.Main\" \"Output\""
+      "commandName": "Project"
     }
   }
 }
