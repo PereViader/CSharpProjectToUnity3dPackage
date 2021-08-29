@@ -6,31 +6,39 @@ namespace CSharpProjectToUnity3dPackage
 {
     public static class DirectoryFileTraverser
     {
-        public static void TraverseAll(string rootDirectoryPath, Action<string> traverseDirectory, Action<string> traverseFile)
+        public static void TraverseAll(string rootDirectoryPath, Predicate<string> ignorePredicate, Action<string> traverseDirectory, Action<string> traverseFile)
         {
             var folderPaths = new Stack<string>();
             var filePaths = new Stack<string>();
 
-            TraverseDirectoryFiles(traverseFile, filePaths, rootDirectoryPath);
+            TraverseDirectoryFiles(ignorePredicate, traverseFile, filePaths, rootDirectoryPath);
             PushSubdirectories(folderPaths, rootDirectoryPath);
 
             while (folderPaths.Count > 0)
             {
                 var folderPath = folderPaths.Pop();
+                if (ignorePredicate.Invoke(folderPath))
+                {
+                    continue;
+                }
                 PushSubdirectories(folderPaths, folderPath);
                 traverseDirectory.Invoke(folderPath);
 
-                TraverseDirectoryFiles(traverseFile, filePaths, folderPath);
+                TraverseDirectoryFiles(ignorePredicate, traverseFile, filePaths, folderPath);
             }
         }
 
-        private static void TraverseDirectoryFiles(Action<string> traverseFile, Stack<string> filePaths, string path)
+        private static void TraverseDirectoryFiles(Predicate<string> ignorePredicate, Action<string> traverseFile, Stack<string> filePaths, string path)
         {
             PushFiles(filePaths, path);
 
             while (filePaths.Count > 0)
             {
                 var filePath = filePaths.Pop();
+                if (ignorePredicate.Invoke(filePath))
+                {
+                    continue;
+                }
                 traverseFile.Invoke(filePath);
             }
         }
@@ -39,7 +47,7 @@ namespace CSharpProjectToUnity3dPackage
         {
             foreach (var path in Directory.GetDirectories(inputPath))
             {
-                paths.Push(path);
+                paths.Push(path + "/");
             }
         }
 

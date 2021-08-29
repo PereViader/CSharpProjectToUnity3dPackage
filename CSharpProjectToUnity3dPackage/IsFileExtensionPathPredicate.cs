@@ -13,7 +13,8 @@ namespace CSharpProjectToUnity3dPackage
 
         public bool Accepts(string filePath)
         {
-            var fileExtension = Path.GetExtension(filePath).Remove(0, 1);
+            var untreatedExtension = Path.GetExtension(filePath);
+            var fileExtension = string.IsNullOrEmpty(untreatedExtension) ? string.Empty : untreatedExtension.Remove(0, 1);
             var result = fileExtension.Equals(this.fileExtension);
             return result;
         }

@@ -8,5 +8,8 @@
         public const string Csharp_Meta_Liquid = TemplatePath + "Csharp.meta.liquid";
         public const string Folder_Meta_Liquid = TemplatePath + "Folder.meta.liquid";
         public const string TextFile_Meta_Liquid = TemplatePath + "TextFile.meta.liquid";
+
+        public const string Unity3dPackage_Configuartion_Json = "unity3d-packageConfiguration.json";
+        public const string Unity3dPackage_File_Json = "unity3d-packageFile.json";
     }
 }

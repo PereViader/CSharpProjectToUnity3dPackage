@@ -11,7 +11,7 @@ namespace CSharpProjectToUnity3dPackage
 
         public static string GetMetaFilePathForFolder(string path)
         {
-            var name = Path.GetFileName(path);
+            var name = Path.GetFileName(Path.TrimEndingDirectorySeparator(path));
             var parentOutputPath = PathUtils.GetParentPath(path);
             var metaFilePath = Path.Combine(parentOutputPath, name + ".meta");
             return metaFilePath;

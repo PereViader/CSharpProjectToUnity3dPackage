@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 
 namespace CSharpProjectToUnity3dPackage
 {
@@ -10,6 +11,9 @@ namespace CSharpProjectToUnity3dPackage
         {
             string inputPath = args[0];
             string outputPath = args[1];
+
+            var configuration = GetConfiguration(inputPath);
+            var ignore = GetIgnore(configuration);
 
             var inputToOutputPathTransformation = new InputToOutputPathTransformation(inputPath, outputPath);
             var metaFilePathTransformation = new CompositePathTransformation(new IPathTransformation[]
@@ -54,7 +58,7 @@ namespace CSharpProjectToUnity3dPackage
             var textFileMetaWritter = new TemplateFileWritter(TemplateUtils.GetTemplateAtPath(FilePaths.TextFile_Meta_Liquid));
 
             var guidContextExtractor = new GuidFileContextExtractor();
-            var nameContextExtractor = new NameWithoutExtensionFileContextExtractor();
+            var asmdefContextExtractor = new AsmdefContextExtractor(configuration);
 
             IOutputter folderOutputter = new CompositeOutputter(new IOutputter[]
             {
@@ -70,7 +74,7 @@ namespace CSharpProjectToUnity3dPackage
 
             IOutputter asmdefOutputter = new CompositeOutputter(new IOutputter[]
             {
-                new TemplateExtractorOutputter(asmdefFilePathTransformation, asmdefFileWritter, nameContextExtractor),
+                new TemplateExtractorOutputter(asmdefFilePathTransformation, asmdefFileWritter, asmdefContextExtractor),
                 new TemplateExtractorOutputter(asmdefMetaPathTransformation, asmdefMetaWritter, guidContextExtractor)
             });
 
@@ -84,7 +88,7 @@ namespace CSharpProjectToUnity3dPackage
             {
                 (new IsFileExtensionPathPredicate("cs"), csharpOutputter),
                 (new IsFileExtensionPathPredicate("csproj"), asmdefOutputter),
-                (new IsFileNamePathPredicate("unity3d-package.json"), unity3dPackageOutputter)
+                (new IsFileNamePathPredicate("unity3d-packageFile.json"), unity3dPackageOutputter)
             });
 
             if (!Directory.Exists(inputPath))
@@ -95,7 +99,16 @@ namespace CSharpProjectToUnity3dPackage
 
             PathUtils.ClearAndCreateDirectory(outputPath);
 
-            DirectoryFileTraverser.TraverseAll(inputPath, directoryPath =>
+            DirectoryFileTraverser.TraverseAll(inputPath, path =>
+            {
+                if (ignore.IsIgnored(path))
+                {
+                    Console.WriteLine($"Ignoring {path}");
+                    return true;
+                }
+                return false;
+            },
+            directoryPath =>
             {
                 folderOutputter.Output(directoryPath);
             },
@@ -103,12 +116,47 @@ namespace CSharpProjectToUnity3dPackage
             {
                 if (!fileOutputterMapper.TryGetOutputerForFile(filePath, out var outputter))
                 {
-                    Console.WriteLine($"Skipping {filePath}");
+                    Console.WriteLine($"Skipping file due to not having outputter: {filePath}");
                     return;
                 }
 
                 outputter.Output(filePath);
             });
+        }
+
+        private static Ignore.Ignore GetIgnore(Unity3dPackageConfiguration unity3DPackageConfiguration)
+        {
+            var ignore = new Ignore.Ignore();
+
+            ignore.Add(unity3DPackageConfiguration.IgnorePaths);
+
+            return ignore;
+        }
+
+        private static Unity3dPackageConfiguration GetConfiguration(string inputPath)
+        {
+            try
+            {
+                var path = Path.Combine(inputPath, FilePaths.Unity3dPackage_Configuartion_Json);
+                var text = File.ReadAllText(path);
+                var configuration = JsonSerializer.Deserialize<Unity3dPackageConfiguration>(text);
+                if (configuration.IgnorePaths == null)
+                {
+                    configuration.IgnorePaths = new List<string>();
+                }
+                if (configuration.AssamblyConfigurations == null)
+                {
+                    configuration.AssamblyConfigurations = new List<AssamblyConfiguration>();
+                }
+                return configuration;
+            }
+            catch
+            {
+                return new Unity3dPackageConfiguration()
+                {
+                    AssamblyConfigurations = new List<AssamblyConfiguration>()
+                };
+            }
         }
     }
 }

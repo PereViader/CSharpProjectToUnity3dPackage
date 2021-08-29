@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotLiquid" Version="2.2.508" />
+    <PackageReference Include="Ignore" Version="0.1.42" />
   </ItemGroup>
 
   <ItemGroup>
