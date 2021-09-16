@@ -1,5 +1,5 @@
-name: 'CSharpProjectToUnity3dPackage'
-description: 'Convert a c# project into a unity package'
+name: 'CSharp Project To Unity3d Package'
+description: 'Convert a c# project into a unity 3d package'
 branding:
   icon: activity
   color: white
@@ -8,12 +8,12 @@ inputs:
     description:
       'The relative input path to the package to be converted'
     required: false
-    default: '/'
+    default: './'
   outputPath:
     description:
       'The relative output path where to output the package to'
     required: false
-    default: '/OutputUnity3dPackage'
+    default: './OutputUnity3dPackage/'
 runs:
   using: 'docker'
   image: 'Dockerfile'

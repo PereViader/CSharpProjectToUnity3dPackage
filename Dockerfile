@@ -11,9 +11,9 @@ LABEL repository="https://github.com/PereViader/CSharpProjectToUnity3dPackage"
 LABEL homepage="https://github.com/PereViader/CSharpProjectToUnity3dPackage"
 
 # Label as GitHub action
-LABEL com.github.actions.name="CSharpProjectToUnity3dPackage"
+LABEL com.github.actions.name="CSharp Project To Unity3d Package"
 # Limit to 160 characters
-LABEL com.github.actions.description="Convert a c# project into a unity package"
+LABEL com.github.actions.description="Convert a c# project into a unity 3d package"
 # See branding:
 # https://docs.github.com/actions/creating-actions/metadata-syntax-for-github-actions#branding
 LABEL com.github.actions.icon="activity"
