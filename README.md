@@ -61,4 +61,9 @@ https://github.com/PereViader/ManualDi.Main/blob/main/.github/workflows/publish-
 Notice the json files at the root of the repository
 
 The `publih-unity3d-package` workflow transforms the c# project and then uploads it to the same repository on a separate branch named `upm`.
-The branch is completely unrelated to the development branch to keep it clean.
+The branch is completely unrelated to the development branch to keep it clean
+
+## License
+
+[MIT](LICENSE.md) © [Pere Viader](https://github.com/PereViader)
+
